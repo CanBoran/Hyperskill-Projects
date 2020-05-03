@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="Problems-Area_of_a_circle_main" target="11" />
+      <module name="Problems-Area_of_a_circle_test" target="11" />
+      <module name="Problems-Distance_main" target="11" />
+      <module name="Problems-Distance_test" target="11" />
+      <module name="Problems-Find_X_main" target="11" />
+      <module name="Problems-Find_X_test" target="11" />
+      <module name="Problems-The_sign_of_a_number_main" target="11" />
+      <module name="Problems-The_sign_of_a_number_test" target="11" />
+      <module name="Problems__10_-Fix_the_program_main" target="11" />
+      <module name="Problems__10_-Fix_the_program_test" target="11" />
+      <module name="Problems__11_-Fix_the_program_main" target="11" />
+      <module name="Problems__11_-Fix_the_program_test" target="11" />
+      <module name="Problems__12_-Tables_and_rows_main" target="11" />
+      <module name="Problems__12_-Tables_and_rows_test" target="11" />
+      <module name="Problems__13_-Binary_search_main" target="11" />
+      <module name="Problems__13_-Binary_search_test" target="11" />
+      <module name="Problems__14_-Complex_numbers_main" target="11" />
+      <module name="Problems__14_-Complex_numbers_test" target="11" />
+      <module name="Problems__15_-Account_main" target="11" />
+      <module name="Problems__15_-Account_test" target="11" />
+      <module name="Problems__16_-Account_and_its_owner_main" target="11" />
+      <module name="Problems__16_-Account_and_its_owner_test" target="11" />
+      <module name="Problems__17_-Army_main" target="11" />
+      <module name="Problems__17_-Army_test" target="11" />
+      <module name="Problems__18_-Preparing_full_name_main" target="11" />
+      <module name="Problems__18_-Preparing_full_name_test" target="11" />
+      <module name="Problems__19_-Application_as_a_class_main" target="11" />
+      <module name="Problems__19_-Application_as_a_class_test" target="11" />
+      <module name="Problems__1_-Adding_values_main" target="11" />
+      <module name="Problems__1_-Adding_values_test" target="11" />
+      <module name="Problems__20_-Book_main" target="11" />
+      <module name="Problems__20_-Book_test" target="11" />
+      <module name="Problems__21_-Classes_for_Hospital_main" target="11" />
+      <module name="Problems__21_-Classes_for_Hospital_test" target="11" />
+      <module name="Problems__22_-String_to_double_conversion_main" target="11" />
+      <module name="Problems__22_-String_to_double_conversion_test" target="11" />
+      <module name="Problems__23_-Converting_and_multiplying_main" target="11" />
+      <module name="Problems__23_-Converting_and_multiplying_test" target="11" />
+      <module name="Problems__24_-Reverse_input_text_main" target="11" />
+      <module name="Problems__24_-Reverse_input_text_test" target="11" />
+      <module name="Problems__25_-Reverse_input_text_main" target="11" />
+      <module name="Problems__25_-Reverse_input_text_test" target="11" />
+      <module name="Problems__26_-Convert_to_bytes_main" target="11" />
+      <module name="Problems__26_-Convert_to_bytes_test" target="11" />
+      <module name="Problems__27_-Count_words_main" target="11" />
+      <module name="Problems__27_-Count_words_test" target="11" />
+      <module name="Problems__28_-Heron's_formula_main" target="11" />
+      <module name="Problems__28_-Heron's_formula_test" target="11" />
+      <module name="Problems__29_-Pow_main" target="11" />
+      <module name="Problems__29_-Pow_test" target="11" />
+      <module name="Problems__2_-Sorting_numbers_main" target="11" />
+      <module name="Problems__2_-Sorting_numbers_test" target="11" />
+      <module name="Problems__30_-Quadratic_equation_main" target="11" />
+      <module name="Problems__30_-Quadratic_equation_test" target="11" />
+      <module name="Problems__3_-Sorting_numbers_main" target="11" />
+      <module name="Problems__3_-Sorting_numbers_test" target="11" />
+      <module name="Problems__4_-Get_first_and_last_elements_main" target="11" />
+      <module name="Problems__4_-Get_first_and_last_elements_test" target="11" />
+      <module name="Problems__5_-Calculator_-_1_main" target="11" />
+      <module name="Problems__5_-Calculator_-_1_test" target="11" />
+      <module name="Problems__6_-Parameters_and_their_values_main" target="11" />
+      <module name="Problems__6_-Parameters_and_their_values_test" target="11" />
+      <module name="Problems__7_-The_index_of_an_argument_main" target="11" />
+      <module name="Problems__7_-The_index_of_an_argument_test" target="11" />
+      <module name="Problems__8_-Calculator_-_2_main" target="11" />
+      <module name="Problems__8_-Calculator_-_2_test" target="11" />
+      <module name="Problems__9_-Fix_the_program_main" target="11" />
+      <module name="Problems__9_-Fix_the_program_test" target="11" />
+      <module name="Readability_Score-task_main" target="11" />
+      <module name="Readability_Score-task_test" target="11" />
+      <module name="util_main" target="11" />
+      <module name="util_test" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

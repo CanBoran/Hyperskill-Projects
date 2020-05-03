@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="Problems-From_Double_to_Integer_main" target="11" />
+      <module name="Problems-From_Double_to_Integer_test" target="11" />
+      <module name="Problems-Merge_all_sequences_main" target="11" />
+      <module name="Problems-Merge_all_sequences_test" target="11" />
+      <module name="Problems-Only_true_or_false_main" target="11" />
+      <module name="Problems-Only_true_or_false_test" target="11" />
+      <module name="Sorting_Tool-task_main" target="11" />
+      <module name="Sorting_Tool-task_test" target="11" />
+      <module name="util_main" target="11" />
+      <module name="util_test" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

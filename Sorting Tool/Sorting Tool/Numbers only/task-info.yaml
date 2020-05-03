@@ -1,0 +1,33 @@
+type: edu
+custom_name: stage1
+files:
+- name: src/sorting/Main.java
+  visible: true
+  text: |
+    package sorting;
+
+    import java.util.*;
+
+    public class Main {
+        public static void main(final String[] args) {
+            Scanner scanner = new Scanner(System.in);
+
+            while (scanner.hasNextLong()) {
+                long number = scanner.nextLong();
+                // write your code here
+            }
+        }
+    }
+  learner_created: false
+- name: test/SortingTest.java
+  visible: false
+  text: |
+    import common.SortingToolStage1Test;
+
+    public class SortingTest extends SortingToolStage1Test {
+
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/projects/45/stages/239/implement
+status: Solved
+record: 1

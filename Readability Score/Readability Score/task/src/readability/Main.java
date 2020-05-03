@@ -144,6 +144,8 @@ public class Main {
                 age = 18;
                 break;
             case 13:
+                age = 24;
+                break;
             case 14:
                 age = 24;
                 break;
