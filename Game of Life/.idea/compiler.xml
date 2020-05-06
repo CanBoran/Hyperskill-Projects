@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="Game_of_Life-task_main" target="11" />
+      <module name="Game_of_Life-task_test" target="11" />
+      <module name="Problems-A_lambda_expression_with_seven_arguments_main" target="11" />
+      <module name="Problems-A_lambda_expression_with_seven_arguments_test" target="11" />
+      <module name="Problems-A_long_process_main" target="11" />
+      <module name="Problems-A_long_process_test" target="11" />
+      <module name="Problems-An_anonymous_class_with_a_single_method_main" target="11" />
+      <module name="Problems-An_anonymous_class_with_a_single_method_test" target="11" />
+      <module name="Problems-Calculate_the_number_of_distinct_characters_main" target="11" />
+      <module name="Problems-Calculate_the_number_of_distinct_characters_test" target="11" />
+      <module name="Problems-Finding_and_starting_a_thread_main" target="11" />
+      <module name="Problems-Finding_and_starting_a_thread_test" target="11" />
+      <module name="Problems-Getting_current_thread_info_main" target="11" />
+      <module name="Problems-Getting_current_thread_info_test" target="11" />
+      <module name="Problems-Getting_distinct_strings_main" target="11" />
+      <module name="Problems-Getting_distinct_strings_test" target="11" />
+      <module name="Problems-Handling_interruptions_main" target="11" />
+      <module name="Problems-Handling_interruptions_test" target="11" />
+      <module name="Problems-IntBinaryOperation_main" target="11" />
+      <module name="Problems-IntBinaryOperation_test" target="11" />
+      <module name="Problems-Interrupting_a_thread_main" target="11" />
+      <module name="Problems-Interrupting_a_thread_test" target="11" />
+      <module name="Problems-Maximum_element_in_a_matrix_main" target="11" />
+      <module name="Problems-Maximum_element_in_a_matrix_test" target="11" />
+      <module name="Problems-Message_notifier_as_a_thread_main" target="11" />
+      <module name="Problems-Message_notifier_as_a_thread_test" target="11" />
+      <module name="Problems-Multiple_threads_main" target="11" />
+      <module name="Problems-Multiple_threads_test" target="11" />
+      <module name="Problems-Next_even_number_main" target="11" />
+      <module name="Problems-Next_even_number_test" target="11" />
+      <module name="Problems-Ordering_the_execution_of_threads_main" target="11" />
+      <module name="Problems-Ordering_the_execution_of_threads_test" target="11" />
+      <module name="Problems-Shape_hierarchy_main" target="11" />
+      <module name="Problems-Shape_hierarchy_test" target="11" />
+      <module name="Problems-String_processor_main" target="11" />
+      <module name="Problems-String_processor_test" target="11" />
+      <module name="Problems-String_reverser_main" target="11" />
+      <module name="Problems-String_reverser_test" target="11" />
+      <module name="Problems-Users_and_WebSites_main" target="11" />
+      <module name="Problems-Users_and_WebSites_test" target="11" />
+      <module name="Problems-VeganPizza_main" target="11" />
+      <module name="Problems-VeganPizza_test" target="11" />
+      <module name="util_main" target="11" />
+      <module name="util_test" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

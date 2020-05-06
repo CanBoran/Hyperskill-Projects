@@ -1,0 +1,412 @@
+type: edu
+custom_name: stage3
+files:
+- name: test/GameOfLifeTest.java
+  visible: false
+  text: |2
+
+    import common.GameOfLifeStage3Test;
+
+    public class GameOfLifeTest extends GameOfLifeStage3Test {
+
+    }
+  learner_created: false
+- name: test/common/CheckResultUtil.kt
+  visible: false
+  text: |
+    package common
+
+
+    import org.hyperskill.hstest.v6.testcase.CheckResult
+
+    operator fun CheckResult.component1(): Boolean = isCorrect
+    operator fun CheckResult.component2(): String? = feedback
+
+    fun fail(message: String) = CheckResult(false, message)  // TODO: add to repo
+  learner_created: false
+- name: test/common/ClueWithChecker.kt
+  visible: false
+  text: |
+    package common
+
+
+    import org.hyperskill.hstest.v6.testcase.CheckResult
+    import org.hyperskill.hstest.v6.testcase.TestCase
+
+    sealed class ClueWithChecker(val input: String) {
+        fun toTestCase(): TestCase<ClueWithChecker> {
+            return TestCase<ClueWithChecker>().setInput(input).setAttach(this)
+        }
+    }
+
+    class ClueWithPredefinedFeedbackChecker(
+            val predefinedFeedback: String,
+            input: String,
+            val checker: (String) -> Boolean
+    ) : ClueWithChecker(input)
+
+    class ClueWithDynamicFeedbackChecker(
+            input: String,
+            val checker: (String) -> CheckResult
+    ) : ClueWithChecker(input)
+
+    fun createDynamicFeedbackTest(input: String = "", checker: (String) -> CheckResult): TestCase<ClueWithChecker> {
+        return ClueWithDynamicFeedbackChecker(
+                input = input,
+                checker = checker
+        ).toTestCase()
+    }
+
+    fun checkClueWithCheckerTest(reply: String, clue: ClueWithChecker): CheckResult {
+        return try {
+            when (clue) {
+                is ClueWithDynamicFeedbackChecker -> clue.checker(reply)
+                is ClueWithPredefinedFeedbackChecker -> CheckResult(clue.checker(reply), clue.predefinedFeedback)
+            }
+        } catch (e: AssertionError) {
+            if (clue is ClueWithPredefinedFeedbackChecker) {
+                fail(clue.predefinedFeedback)
+            } else {
+                CheckResult.FALSE
+            }
+        }
+    }
+  learner_created: false
+- name: test/common/GameOfLifeStage3Test.kt
+  visible: false
+  text: |
+    package common
+
+
+    import org.hyperskill.hstest.v6.stage.BaseStageTest
+    import org.hyperskill.hstest.v6.testcase.CheckResult
+    import org.hyperskill.hstest.v6.testcase.TestCase
+    import life.Main
+
+    abstract class GameOfLifeStage3Test : BaseStageTest<ClueWithChecker>(Main::class.java) {
+
+        override fun generate(): List<TestCase<ClueWithChecker>> {
+            // two times:
+            return (5..MAX_SIZE).flatMap(::stage3Tests) + (5..MAX_SIZE).flatMap(::stage3Tests)
+        }
+
+        override fun check(reply: String, clue: ClueWithChecker): CheckResult {
+            return checkClueWithCheckerTest(reply = reply, clue = clue)
+        }
+
+        companion object {
+            const val MAX_SIZE = 10
+        }
+    }
+
+    fun stage3Tests(universeSize: Int): List<TestCase<ClueWithChecker>> {
+        return listOf(
+                createDynamicFeedbackTest("$universeSize\n") { reply ->
+                    @Suppress("FoldInitializerAndIfToElvis")
+                    val generations = reply
+                            .toLowerCase()
+                            .lines()
+                            .filter { it.isNotEmpty() }
+                            .joinToString("\n")
+                            .split("generation".toRegex())
+                            .drop(1)
+                            .map {
+                                val lines = it.lines()
+                                val (idString, aliveString) = lines
+                                val map = lines.drop(2)
+
+                                if (!map.canBeMap(universeSize)) {
+                                    return@createDynamicFeedbackTest fail("Can't read map in:\n$it\n")
+                                }
+
+                                val id = intRegex.find(idString)?.groupValues?.firstOrNull()?.toInt()
+                                if (id == null) {
+                                    return@createDynamicFeedbackTest fail("Can't find generation ID:\n$it\n")
+                                }
+
+                                val alive = intRegex.find(aliveString)?.groupValues?.firstOrNull()?.toInt()
+                                if (alive == null) {
+                                    return@createDynamicFeedbackTest fail("Can't find alive count:\n$it\n")
+                                }
+
+                                val generation = Generation(id, alive, map)
+                                val aliveOnMap = generation.aliveOnMap(universeSize)
+
+                                if (aliveOnMap != alive) {
+                                    return@createDynamicFeedbackTest fail(
+                                            "Alive count is wrong ($alive expected, $aliveOnMap got):\n$it\n"
+                                    )
+                                }
+
+                                return@map generation
+                            }
+
+                    if (generations.isEmpty()) {
+                        return@createDynamicFeedbackTest fail("Your program doesn't output generations for size $universeSize")
+                    }
+
+                    if (generations.first().id != 1) {
+                        return@createDynamicFeedbackTest fail("First generation has number ${generations.first().id}")
+                    }
+
+                    val diffs = generations.windowed(2)
+
+                    diffs.forEach { (prev, next) ->
+                        if (prev.id + 1 != next.id) {
+                            return@createDynamicFeedbackTest fail("ID of the generation #${prev.id + 1} is wrong (${next.id})")
+                        }
+
+                        if (!prev.evolvesTo(next, universeSize)) {
+                            return@createDynamicFeedbackTest fail("Wrong evolution from #${prev.id} to #${prev.id + 1}")
+                        }
+                    }
+
+                    return@createDynamicFeedbackTest CheckResult.TRUE
+                }
+        )
+    }
+
+    val intRegex = """(\d)+""".toRegex()
+
+    fun List<String>.canBeMap(universeSize: Int): Boolean {
+        if (this.size < universeSize) {
+            return false
+        }
+
+        return this.take(universeSize).all { it.length >= universeSize }
+    }
+
+    data class Generation(val id: Int, val alive: Int, val map: List<String>) {
+        fun aliveOnMap(universeSize: Int): Int {
+            return (0 until universeSize)
+                    .flatMap { y -> (0 until universeSize).map { x -> x to y } }
+                    .map { (x, y) -> map[x][y] }
+                    .count { it.isAlive() }
+        }
+
+        fun evolvesTo(other: Generation, universeSize: Int): Boolean {
+            return (0 until universeSize)
+                    .flatMap { y -> (0 until universeSize).map { x -> x to y } }
+                    .map { (x, y) ->
+                        if (map[x][y].isAlive()) {
+                            if (aliveNeighbours(x, y, universeSize) in setOf(2, 3)) {
+                                other.map[x][y].isAlive()
+                            } else {
+                                !other.map[x][y].isAlive()
+                            }
+                        } else {
+                            if (aliveNeighbours(x, y, universeSize) == 3) {
+                                other.map[x][y].isAlive()
+                            } else {
+                                !other.map[x][y].isAlive()
+                            }
+                        }
+                    }
+                    .all { it }
+        }
+
+        fun aliveNeighbours(x: Int, y: Int, universeSize: Int): Int {
+            var north = x - 1
+            if (north < 0) north = universeSize - 1
+            var south = x + 1
+            if (south > universeSize - 1) south = 0
+            var west = y - 1
+            if (west < 0) west = universeSize - 1
+            var east = y + 1
+            if (east > universeSize - 1) east = 0
+
+            var aliveNeighbours = 0
+            if (map[north][west].isAlive()) ++aliveNeighbours
+            if (map[north][y].isAlive()) ++aliveNeighbours
+            if (map[north][east].isAlive()) ++aliveNeighbours
+            if (map[x][west].isAlive()) ++aliveNeighbours
+            if (map[x][east].isAlive()) ++aliveNeighbours
+            if (map[south][west].isAlive()) ++aliveNeighbours
+            if (map[south][y].isAlive()) ++aliveNeighbours
+            if (map[south][east].isAlive()) ++aliveNeighbours
+
+            return aliveNeighbours
+        }
+
+        fun Char.isAlive(): Boolean = this != ' '
+    }
+  learner_created: false
+- name: src/life/Main.java
+  visible: true
+  text: |-
+    package life;
+
+    import java.io.IOException;
+    import java.io.InputStreamReader;
+    import java.io.BufferedReader;
+    import java.util.Random;
+
+    public class Main {
+        public static void main(String[] args) {
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));){
+                String[] input = br.readLine().split(" ");
+                int size = Integer.parseInt(input[0]);
+                int seed = Integer.parseInt(input[1]);
+                int numOfGeneration = Integer.parseInt(input[2]);
+
+                Universe uni = new Universe(size, size, seed);
+
+                for(int i = 0; i < numOfGeneration; i++) {
+                    uni.nextWorld();
+                }
+                System.out.printf("\n");
+                uni.printUniverse();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    class Universe {
+
+        final private int N;
+        final private int M;
+        private boolean world[][];
+        private Random random;
+
+        public Universe(int n, int m, long seed) {
+            N = n;
+            M = m;
+            world = new boolean[N][M];
+            random = new Random(seed);
+
+            // Populate the universe
+            for ( int i = 0; i < N; i++ ) {
+                for ( int j = 0; j < M; j++ ) {
+                    world[i][j] = random.nextBoolean();
+                }
+            }
+        }
+
+        public int getN() {
+            return N;
+        }
+
+        public int getM() {
+            return M;
+        }
+
+        public boolean getCell(int n, int m) {
+            return world[n][m];
+        }
+
+        public void nextWorld() {
+            boolean[][] newWorld = new boolean[M][N];
+
+            for ( int i = 0; i < N; i++ ) {
+                for ( int j = 0; j < M; j++ ) {
+                    newWorld[i][j] = isAlive(i,j);
+                }
+            }
+            world = newWorld;
+        }
+
+        // NW  N  NE
+        // W   X   E
+        // SW  S  SE
+        private boolean isAlive(int n, int m) {
+
+            int sum = 0;
+
+            int[] offsetNW = new int[]{n - 1, m - 1};
+            int[] offsetN = new int[]{n - 1, m};
+            int[] offsetNE = new int[]{n - 1, m + 1};
+            int[] offsetW = new int[]{n, m - 1};
+            int[] offsetE = new int[]{n, m + 1};
+            int[] offsetSW = new int[]{n + 1, m - 1};
+            int[] offsetS = new int[]{n + 1, m};
+            int[] offsetSE = new int[]{n + 1, m + 1};
+
+            if (n == 0 && m == 0) {
+                offsetNW[0] = N - 1;
+                offsetN[0] = N - 1;
+                offsetNE[0] = N - 1;
+                offsetNW[1] = M - 1;
+                offsetW[1] = M - 1;
+                offsetSW[1] = M - 1;
+            } else if (n + 1 == N && m == 0) {
+                offsetSW[0] = 0;
+                offsetS[0] = 0;
+                offsetSE[0] = 0;
+                offsetNW[1] = M - 1;
+                offsetW[1] = M - 1;
+                offsetSW[1] = M - 1;
+            } else if (n == 0 && m + 1 == M) {
+                offsetNW[0] = N - 1;
+                offsetN[0] = N - 1;
+                offsetNE[0] = N - 1;
+                offsetNE[1] = 0;
+                offsetE[1] = 0;
+                offsetSE[1] = 0;
+            } else if (n + 1 == N && m + 1 == M) {
+                offsetNE[1] = 0;
+                offsetE[1] = 0;
+                offsetSE[1] = 0;
+                offsetSE[0] = 0;
+                offsetS[0] = 0;
+                offsetSW[0] = 0;
+            } else if (n == 0) {
+                offsetNW[0] = N - 1;
+                offsetN[0] = N - 1;
+                offsetNE[0] = N - 1;
+            } else if (m == 0) {
+                offsetNW[1] = M - 1;
+                offsetW[1] = M - 1;
+                offsetSW[1] = M - 1;
+            } else if (n + 1 == N) {
+                offsetSW[0] = 0;
+                offsetS[0] = 0;
+                offsetSE[0] = 0;
+            } else if (m + 1 == M) {
+                offsetNE[1] = 0;
+                offsetE[1] = 0;
+                offsetSE[1] = 0;
+            }
+            sum += world[offsetNW[0]][offsetNW[1]] ? 1 : 0;  // NW
+            sum += world[offsetN[0]][offsetN[1]] ? 1 : 0;      // N
+            sum += world[offsetNE[0]][offsetNE[1]] ? 1 : 0;  // NE
+            sum += world[offsetW[0]][offsetW[1]] ? 1 : 0;      // W
+            sum += world[offsetE[0]][offsetE[1]] ? 1 : 0;      // E
+            sum += world[offsetSW[0]][offsetSW[1]] ? 1 : 0;  // SW
+            sum += world[offsetS[0]][offsetS[1]] ? 1 : 0;      // S
+            sum += world[offsetSE[0]][offsetSE[1]] ? 1 : 0;  // SE
+
+            if (sum == 2 && world[n][m]) {
+                return true;
+            } else if (sum == 3) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public void printUniverse() {
+            for(int i = 0; i < world.length; i++) {
+                for(int j = 0; j < world.length; j++) {
+                    if(world[i][j]) {
+                        System.out.print('O');
+                    } else {
+                        System.out.print(' ');
+                    }
+                }
+                System.out.printf("\n");
+            }
+        }
+
+    }
+
+    class UniverseGenerator {
+
+    }
+  learner_created: true
+feedback_link: https://hyperskill.org/projects/54/stages/296/implement
+status: Solved
+record: 3
